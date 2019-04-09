@@ -1,0 +1,236 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.java.dao.CarInformationDao">
+	
+	<resultMap type="CarInformation" id="CarInformationResult">
+		<result property="id" column="id" />
+		<result property="fileId" column="fileId" />
+		<result property="storageTime" column="storageTime" />
+		<result property="carId" column="carId" />
+		<result property="identifierCode" column="identifierCode" />
+		<result property="carType" column="carType" />
+		<result property="carColor" column="carColor" />
+		<result property="carBrand" column="carBrand" />
+		<result property="cost" column="cost" />
+		<result property="registrationName" column="registrationName" />
+		<result property="park" column="park" />
+		<result property="lawEnforcement" column="lawEnforcement" />
+		<result property="police" column="police" />
+		<result property="note" column="note" />
+		<result property="itemName" column="itemName" />
+		<result property="specifications" column="specifications" />
+		<result property="itemNum" column="itemNum" />
+		<result property="itemNote" column="itemNote" />
+		<result property="photo1" column="photo1" />
+		<result property="photo2" column="photo2" />
+		<result property="photo3" column="photo3" />
+		<result property="photo4" column="photo4" />
+		<result property="carState" column="carState" />
+		<result property="State" column="State" />
+		<result property="auditNote" column="auditNote" />
+		<result property="createDateTime" column="createDateTime" />
+		<result property="leaveTime" column="leaveTime" />
+		<result property="storageName" column="storageName" />
+				<result property="leaveName" column="leaveName" />
+	</resultMap>
+	
+	<insert id="add" parameterType="CarInformation">
+		insert into car_information values(null,#{fileId},#{storageTime}
+		,#{carId},#{identifierCode},#{carType},#{carColor},#{carBrand},
+		#{cost},#{registrationName},#{park},#{lawEnforcement},
+		#{police},#{note},#{itemName},#{specifications},
+		#{itemNum},#{itemNote},#{photo1},#{photo2},#{photo3},
+		#{photo4},#{carState},#{State},#{auditNote},
+		#{createDateTime},#{leaveTime},#{storageName},#{leaveName})
+	</insert>
+	
+	<update id="update" parameterType="CarInformation">
+		update car_information
+		<set>
+			<if test="fileId!=null  ">
+				fileId=#{fileId},
+			</if>
+			<if test="storageTime!=null  ">
+				storageTime=#{storageTime},
+			</if>
+			<if test="carId!=null  ">
+				carId=#{carId},
+			</if>
+			<if test="identifierCode!=null  ">
+				identifierCode=#{identifierCode},
+			</if>
+			<if test="carType!=null  ">
+				carType=#{carType},
+			</if>
+			<if test="carColor!=null  ">
+				carColor=#{carColor},
+			</if>
+			<if test="carBrand!=null  ">
+				carBrand=#{carBrand},
+			</if>
+			<if test="cost!=null  ">
+				cost=#{cost},
+			</if>
+			<if test="registrationName!=null  ">
+				registrationName=#{registrationName},
+			</if>
+			<if test="park!=null  ">
+				park=#{park},
+			</if>
+			<if test="lawEnforcement!=null  ">
+				lawEnforcement=#{lawEnforcement},
+			</if>
+			<if test="police!=null  ">
+				police=#{police},
+			</if>
+			<if test="note!=null  ">
+				note=#{note},
+			</if>
+			<if test="itemName!=null  ">
+				itemName=#{itemName},
+			</if>
+			<if test="specifications!=null  ">
+				specifications=#{specifications},
+			</if>
+			<if test="itemNum!=null  ">
+				itemNum=#{itemNum},
+			</if>
+			<if test="itemNote!=null  ">
+				itemNote=#{itemNote},
+			</if>
+			<if test="photo1!=null ">
+				photo1=#{photo1},
+			</if>
+			<if test="photo2!=null ">
+				photo2=#{photo2},
+			</if>
+			<if test="photo3!=null  ">
+				photo3=#{photo3},
+			</if>
+			<if test="photo4!=null  ">
+				photo4=#{photo4},
+			</if>
+			<if test="carState!=null  ">
+				carState=#{carState},
+			</if>
+			<if test="State!=null  ">
+				State=#{State},
+			</if>
+			<if test="auditNote!=null  ">
+				auditNote=#{auditNote},
+			</if>
+			<if test="leaveTime!=null  ">
+				leaveTime=#{leaveTime},
+			</if>
+			<if test="storageName!=null  ">
+				storageName=#{storageName},
+			</if>
+			<if test="leaveName!=null  ">
+				leaveName=#{leaveName},
+			</if>
+		</set>
+		where id=#{id}
+	</update>
+	
+	<select id="list" parameterType="Map" resultMap="CarInformationResult">
+		select car_information.*,sub.sub,sub.subDateTime from car_information LEFT JOIN sub ON car_information.id=sub.carId
+		<where>
+			<if test="q!=null and q!=''">
+				and car_information.registrationName like #{q} 
+			</if>
+				<if test="date1!=null and date1!='' ">
+		 		and car_information.createDateTime &gt; #{date1} 
+			</if>
+			<if test="date2!=null and date2!='' ">
+		 		and car_information.createDateTime &lt;  #{date2} 
+			</if>
+			<if test="carState!=null and carState!=''and carState!='nul'  ">
+		 		and car_information.carState = #{carState} 
+			</if>
+			<if test="carState1!=null and carState1!='' and carState1!='nul' ">
+		 		or car_information.carState = #{carState1} 
+			</if>
+			<if test="carState=='nul'">
+		 		and car_information.carState IS NULL 
+			</if>
+			<if test="sub!=null and sub!='' and sub!='nul' ">
+		 		and sub.sub= #{sub} 
+			</if>
+			<if test="subid!=null and subid!='' and subid!='nul' ">
+		 		and sub.subid= #{subid} 
+			</if>
+			<if test="sub=='nul' ">
+		 		and sub.sub is null 
+			</if>
+			<if test="state!=null and state!=''and state!='nul'  ">
+		 		and sub.state= #{state} 
+			</if>
+			<if test="state=='nul' ">
+		 		and sub.state is null 
+			</if>
+		</where>
+		order by car_information.id DESC
+		<if test="start!=null and size!=null">
+			limit #{start},#{size}
+		</if>
+	</select>
+	
+	
+	<select id="findById" parameterType="Integer" resultMap="CarInformationResult">
+		select * from car_information where id=#{id}
+	</select>
+	<select id="findByuserId" parameterType="Integer" resultMap="CarInformationResult">
+		select * from car_information where userId=#{userId}
+	</select>
+	<select id="findByFileId" parameterType="String" resultMap="CarInformationResult">
+		select * from car_information where fileId=#{fileId}
+	</select>
+	
+	<select id="getTotal" parameterType="Map" resultType="Integer">
+		select
+		count(*) from car_information LEFT JOIN sub ON car_information.id=sub.carId
+		<where>
+			<if test="q!=null and q!=''">
+				and car_information.registrationName like #{q} 
+			</if>
+				<if test="date1!=null and date1!='' ">
+		 		and car_information.createDateTime &gt; #{date1} 
+			</if>
+			<if test="date2!=null and date2!='' ">
+		 		and car_information.createDateTime &lt;  #{date2} 
+			</if>
+			<if test="carState!=null and carState!=''and carState!='nul'  ">
+		 		and car_information.carState = #{carState} 
+			</if>
+			<if test="carState1!=null and carState1!='' and carState1!='nul' ">
+		 		or car_information.carState = #{carState1} 
+			</if>
+			<if test="carState=='nul'">
+		 		and car_information.carState IS NULL 
+			</if>
+			<if test="sub!=null and sub!='' and sub!='nul' ">
+		 		and sub.sub= #{sub} 
+			</if>
+			<if test="subid!=null and subid!='' and subid!='nul' ">
+		 		and sub.subid= #{subid} 
+			</if>
+			<if test="sub=='nul' ">
+		 		and sub.sub is null 
+			</if>
+			<if test="state!=null and state!=''and state!='nul'  ">
+		 		and sub.state= #{state} 
+			</if>
+			<if test="state=='nul' ">
+		 		and sub.state is null 
+			</if>
+		</where>
+	</select>
+	
+	
+	
+	<delete id="delete" parameterType="Integer">
+		delete from car_information where id=#{id}
+	</delete>
+</mapper>

@@ -1,0 +1,98 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.java.dao.SubDao">
+
+	<resultMap type="Sub" id="SubResult">
+		<result property="id" column="id" />
+		<result property="carId" column="carId" />
+		<result property="subid" column="subid" />
+		<result property="sub" column="sub" />
+		<result property="note" column="note" />
+		<result property="applicant" column="applicant" />
+		<result property="materials" column="materials" />
+		<result property="subDateTime" column="subDateTime" />
+		<result property="state" column="state" />
+	</resultMap>
+	
+	<insert id="add" parameterType="Sub">
+		INSERT INTO sub  VALUES(NULL,#{carId},#{applicant},#{subid},#{sub},#{note},#{subDateTime},
+		#{materials},#{state})
+	</insert>
+	
+	<select id="list" parameterType="Map" resultMap="SubResult">
+		select car_information.fileId,sub.* from sub LEFT JOIN car_information ON car_information.id=sub.carId
+		<where>
+			<if test="q!=null and q!=''">
+				and (car_information.fileId like #{q}) 
+			</if>
+			<if test="subid!=null and subid!='' ">
+		 		and sub.subid = #{subid} 
+			</if>
+			<if test="sub!=null and sub!='' ">
+		 		and sub.sub = #{sub} 
+			</if>
+			
+			
+		</where>
+		  order by sub.id DESC
+		<if test="start!=null and size!=null">
+			limit #{start},#{size}
+		</if>
+	</select>
+	
+	<select id="getTotal" parameterType="Map" resultType="Integer">
+		SELECT   COUNT(*) FROM sub LEFT JOIN car_information ON car_information.id=sub.carId 
+		<where>
+			<if test="q!=null and q!=''">
+				and (car_information.fileId like #{q}) 
+			</if>
+			<if test="subid!=null and subid!='' ">
+		 		and sub.subid = #{subid} 
+			</if>
+			<if test="sub!=null and sub!='' ">
+		 		and sub.sub = #{sub} 
+			</if>
+		</where>
+	</select>
+	
+	<update id="update" parameterType="Sub">
+		update sub
+		<set>
+			<if test="subid!=null  ">
+				subid=#{subid},
+			</if>
+			<if test="sub!=null  ">
+				sub=#{sub},
+			</if>
+			<if test="note!=null  ">
+				note=#{note},
+			</if>
+			<if test="applicant!=null  ">
+				applicant=#{applicant},
+			</if>
+			<if test="materials!=null  ">
+				materials=#{materials},
+			</if>
+			<if test="subDateTime!=null  ">
+				subDateTime=#{subDateTime},
+			</if>
+			<if test="state!=null  ">
+				state=#{state},
+			</if>
+		</set>
+		where id=#{id}
+	</update>
+	
+	<select id="findById" parameterType="Integer" resultMap="SubResult">
+		select * from sub where id=#{id}
+	</select>
+	<select id="findByCarId" parameterType="Integer" resultMap="SubResult">
+		select * from sub where carId=#{carId}
+	</select>
+	<delete id="delete" parameterType="Integer">
+		delete from sub where id=#{id}
+	</delete>
+	
+	</mapper>

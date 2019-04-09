@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.java.dao.ParkDao">
+	
+	<resultMap type="Park" id="ParkResult">
+		<result property="id" column="id" />
+		<result property="parkName" column="parkName" />
+		<result property="address" column="address" />
+		<result property="num" column="num" />
+		<result property="principal" column="principal" />
+		<result property="state" column="state" />
+	</resultMap>
+	
+	<insert id="add" parameterType="Park">
+		insert into park values(null,#{parkName},#{address},#{num},#{principal},#{state})
+	</insert>
+	<update id="update" parameterType="Park">
+		update park
+		<set>
+			<if test="parkName!=null  ">
+				parkName=#{parkName},
+			</if>
+			<if test="address!=null  ">
+				address=#{address},
+			</if>
+			<if test="num!=null  ">
+				num=#{num},
+			</if>
+			<if test="principal!=null  ">
+				principal=#{principal},
+			</if>
+			<if test="state!=null  ">
+				state=#{state},
+			</if>
+		</set>
+		where id=#{id}
+	</update>
+
+	<select id="findById" parameterType="Integer" resultMap="ParkResult">
+		select * from park where id=#{id}
+	</select>
+	
+	<delete id="delete" parameterType="Integer">
+		delete from park where id=#{id}
+	</delete>
+</mapper>
